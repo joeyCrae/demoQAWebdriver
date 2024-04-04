@@ -69,8 +69,44 @@ describe('My Login application', async () => {
     })
 
 
-    it('should login with valid credentials', async () => {
+    it('Check Box', async () => {
+        // Wait for page to load
+        await browser.pause(2000);
+
+        //Check Box
+        const item2 = await $('#item-1');
+
+        //Assert that item 2 is visible
+        await expect(item2).toBeDisplayed();
+
+        //Click item 2
+        await item2.click();
+
+        //Get the dropdown svg
+        const dropdown = await $('//button[@title="Toggle"]//*[name()="svg"]');
+        await expect(dropdown).toBeDisplayed();
+        dropdown.scrollIntoView();
+
+        //Click the svg
+        await dropdown.click();
+
+        //Select the Downloads Check Box
+        await browser.pause(1000); // Adjust the pause as needed
+        const downloads = await $('[for="tree-node-downloads"]');
+
+        //Click Download check box
+        await downloads.click();
+
+        //Assert that the success message
+        const successMsg = await $('#result');
+        const expectedMsg = "You have selected :\n" +
+            "downloads\n" +
+            "wordFile\n" +
+            "excelFile";
+        const actualMsg = await successMsg.getText();
+        await expect(actualMsg).toContain(expectedMsg);
         
+        await browser.pause(2000); // Adjust the pause as needed
     })
 })
 
