@@ -2,16 +2,9 @@ describe('My Login application', async () => {
     
     beforeEach(async () => {
         await browser.url("https://demoqa.com/")
+        await browser.pause(60000);
         await browser.maximizeWindow();
 
-        //Getting the Elements tab and clicking it
-        const elements = await $('//*[@id="app"]/div/div/div[2]/div/div[1]')
-        
-        //Assert visible
-        await expect(elements).toExist();
-
-        //Click elements tab
-        elements.click();
     })
 
     it('Text Box', async () => {
