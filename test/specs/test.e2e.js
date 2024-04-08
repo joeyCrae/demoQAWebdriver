@@ -2,8 +2,16 @@ describe('My Login application', async () => {
     
     beforeEach(async () => {
         await browser.url("https://demoqa.com/")
-        await browser.pause(60000);
         await browser.maximizeWindow();
+
+        //Getting the Elements tab and clicking it
+        const elements = await $('//*[@id="app"]/div/div/div[2]/div/div[1]')
+        
+        //Assert visible
+        await expect(elements).toExist();
+
+        //Click elements tab
+        elements.click();
 
     })
 
@@ -101,5 +109,45 @@ describe('My Login application', async () => {
         
         await browser.pause(2000); // Adjust the pause as needed
     })
+
+    it('Radio Button', async () => {
+        // Wait for page to load
+        await browser.pause(2000);
+        
+        // Assert that item 3 is visible
+        const item3 = await $('#item-2');
+        item3.waitForDisplayed();
+        expect(await item3.isDisplayed()).toBe(true, 'Item i//*[@id="app"]/div/div/div[2]/div/div[1]`s not Displayed');
+
+        // Click item 3
+        await item3.click();
+
+        // Assert that the question is visible
+        const question = await $('.mb-3');
+        const expectedQuestion = 'Do you like the site?';
+        const actualQuestion = await question.getText();
+        expect(actualQuestion).toContain(expectedQuestion, "Expected 'Do you like the site?' to be found but couldn't find it");
+
+        // Getting all radio buttons
+        const radioButtons = await $$('.custom-control-input[type="radio"]');
+        
+        // Click the first radio button
+        const firstRadioButton = radioButtons[0];
+        await firstRadioButton.click({ force:true });
+
+
+        // Click the Yes radio button with an offset
+        const yesRadioLocation = await firstRadioButton.getLocation();
+        console.log(yesRadioLocation);
+
+        // Get the label that is displayed
+        const pTags = await $('p.mt-3');
+        const expectedMsg = 'You have selected Yes';
+        const actualMsg = await pTags.getText();
+
+        // Asserting that the radio button is selected
+        expect(actualMsg).toContain(expectedMsg, 'Actual Message does not match the Expected Message');
+        console.log('This assertion passed');
+    });
 })
 
